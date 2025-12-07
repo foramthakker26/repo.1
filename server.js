@@ -1,17 +1,12 @@
 import express from "express";
-import dotenv from "dotenv";
-import connectDB from "./config/db.js";
-
-dotenv.config();
+import authRoute from "./routes/authRoute.js"; // your import is correct
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Middleware to parse JSON
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
+// Register the route
+app.use("/api/auth", authRoute);
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3000, () => console.log("Server running on port 3000"));
