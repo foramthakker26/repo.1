@@ -1,12 +1,14 @@
-import express from "express";
-import authRoute from "./routes/authRoute.js"; // your import is correct
+import profileRoutes from "./routes/profileRoutes.js";
+app.use("/profile", profileRoutes);
 
-const app = express();
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected Successfully ✔");
+  } catch (error) {
+    console.error("MongoDB Connection Failed ❌", error);
+    process.exit(1);
+  }
+};
 
-// Middleware to parse JSON
-app.use(express.json());
-
-// Register the route
-app.use("/api/auth", authRoute);
-
-app.listen(3000, () => console.log("Server running on port 3000"));
+export default connectDB;
