@@ -1,52 +1,66 @@
-// src/App.jsx
-import React from "react";
-import Card from "./components/Card";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const cards = [
-    {
-      title: "React Basics",
-      description: "Learn components, props, and JSX.",
-      category: "Programming",
-      color: "#7F7FD5"
-    },
-    {
-      title: "Travel Guide",
-      description: "Best places to visit in 2025.",
-      category: "Travel",
-      color: "#FFB199"
-    },
-    {
-      title: "Food Recipe",
-      description: "How to cook delicious pasta.",
-      category: "Cooking",
-      color: "#74ebd5"
-    },
-    {
-      title: "Fitness Tips",
-      description: "Improve stamina with daily habits.",
-      category: "Health",
-      color: "#F6D365"
-    }
-  ];
+  const [liked, setLiked] = useState(false);
+  const [done, setDone] = useState(false);
+  const [show, setShow] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [dark, setDark] = useState(false);
 
   return (
-    <main className="page">
-      <h1 className="page-title">Day 2 — Components & Props</h1>
+    <div className={dark ? "app dark" : "app"}>
+      <h1 className="title">Interactive Buttons</h1>
 
-      <section className="cards-container">
-        {cards.map((c, i) => (
-          <Card
-            key={i}
-            title={c.title}
-            description={c.description}
-            category={c.category}
-            color={c.color}
-          />
-        ))}
-      </section>
-    </main>
+      <div className="card">
+        <h2></h2>
+
+        {/* Like Button */}
+        <button
+          className={liked ? "btn like active" : "btn like"}
+          onClick={() => setLiked(!liked)}
+        >
+          {liked ? "❤️ Liked" : "🤍 Like"}
+        </button>
+
+        {/* Mark As Done */}
+        <button
+          className={done ? "btn done active" : "btn done"}
+          onClick={() => setDone(!done)}
+        >
+          {done ? "✔ Completed" : "Mark as Done"}
+        </button>
+
+        {/* Expand Collapse */}
+        <button className="btn info" onClick={() => setShow(!show)}>
+          {show ? "Hide Details" : "Show Details"}
+        </button>
+
+        {show && <p className="details">This is additional information 📄</p>}
+
+        {/* Quantity */}
+        <div className="qty-box">
+          <button
+            className="qty-btn"
+            onClick={() => setQty(qty - 1)}
+            disabled={qty === 1}
+          >
+            -
+          </button>
+
+          <span className="qty-number">{qty}</span>
+
+          <button className="qty-btn" onClick={() => setQty(qty + 1)}>
+            +
+          </button>
+        </div>
+
+        {/* Theme Toggle */}
+        <button className="btn theme" onClick={() => setDark(!dark)}>
+          Toggle Theme 🌗
+        </button>
+      </div>
+    </div>
   );
 }
 
