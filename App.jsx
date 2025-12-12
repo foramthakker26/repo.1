@@ -1,146 +1,175 @@
 import { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ItemCard from "./components/ItemCard";
 
 function App() {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [desc, setDesc] = useState("");
-  const [items, setItems] = useState([]);
+  // page switching state
+  const [page, setPage] = useState("home");
 
-  // Add item
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!title || !category || !desc) return alert("Please fill all fields!");
-
-    const newItem = {
+  // recipe states (used in Project page)
+  const [recipeName, setRecipeName] = useState("");
+  const [recipes, setRecipes] = useState([
+    // example initial item (optional)
+    {
       id: Date.now(),
-      title,
-      category,
-      desc,
+      title: "paneer butter masala",
+      liked: true,
+    },
+  ]);
+
+  // add new recipe (used in Project page)
+  const addRecipe = (e) => {
+    e.preventDefault();
+    if (!recipeName.trim()) return;
+
+    const newRecipe = {
+      id: Date.now(),
+      title: recipeName.trim(),
+      liked: false,
     };
 
-    setItems([...items, newItem]);
-
-    // Clear input fields
-    setTitle("");
-    setCategory("");
-    setDesc("");
+    setRecipes((prev) => [...prev, newRecipe]);
+    setRecipeName("");
   };
 
-  // Delete one item
-  const deleteItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+  // toggle like
+  const toggleLike = (id) => {
+    setRecipes((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, liked: !item.liked } : item))
+    );
   };
 
-  // Clear all items
-  const clearAll = () => {
-    setItems([]);
+  // delete a recipe
+  const deleteRecipe = (id) => {
+    setRecipes((prev) => prev.filter((item) => item.id !== id));
   };
+
+  // clear all recipes
+  const clearAll = () => setRecipes([]);
 
   return (
-    <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>Day 4 — Lists & Forms</h1>
+    <>
+      <Navbar setPage={setPage} />
 
-      <h2>Add Item</h2>
-      <form onSubmit={handleSubmit} style={{ width: "300px" }}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={inputStyle}
-        />
+      <div className="container pageContainer pt-4">
+        {/* =========================
+            HOME - welcome hero
+            ========================= */}
+        {page === "home" && (
+          <div className="text-center mt-5">
+            {/* Optional hero image in public/hero.jpg */}
+            <div className="hero-box mx-auto mb-4">
+              <img
+                src="/hero.jpg"
+                alt="Hero"
+                style={{
+                  maxWidth: 220,
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: 16,
+                  display: "block",
+                  margin: "0 auto",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+                }}
+                onError={(e) => {
+                  // hide broken image if not present
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            </div>
 
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          style={inputStyle}
-        />
+            <h1 className="fw-bold" style={{ fontSize: 36 }}>
+              👋 Welcome
+            </h1>
+            <p className="lead" style={{ color: "#444", maxWidth: 700, margin: "10px auto 30px" }}>
+              Welcome to <strong>Recipe Finder</strong> — your simple and friendly place to save,
+              browse and manage delicious recipes. Click <em>Project</em> to add and manage recipes.
+            </p>
 
-        <input
-          type="text"
-          placeholder="Description / Amount / Note"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          style={inputStyle}
-        />
+            <div className="d-flex justify-content-center gap-3">
+              <button className="btn btn-primary" onClick={() => setPage("project")}>
+                Go to Project
+              </button>
+              <button className="btn btn-outline-secondary" onClick={() => setPage("about")}>
+                Learn more
+              </button>
+            </div>
+          </div>
+        )}
 
-        <button type="submit" style={btnStyle}>Submit</button>
-      </form>
+        {/* =========================
+            ABOUT
+            ========================= */}
+        {page === "about" && (
+          <div className="text-center mt-5">
+            <h2>About Recipe Finder</h2>
+            <p className="mt-3" style={{ color: "#444", maxWidth: 700, margin: "0 auto" }}>
+              Recipe Finder is a simple and user-friendly app that helps you create, store, and manage
+              your favorite recipes in one place. Add a recipe in the Project page and manage it easily.
+            </p>
+          </div>
+        )}
 
-      <hr />
+        {/* =========================
+            PROJECT - interactive UI (form + list)
+            ========================= */}
+        {page === "project" && (
+          <>
+            <h2 className="text-center fw-bold mb-4">🍽️ Project - Manage Recipes</h2>
 
-      <h2>Items List</h2>
+            {/* Add Recipe Form */}
+            <form
+              onSubmit={addRecipe}
+              className="d-flex justify-content-start gap-3 mb-4 align-items-center"
+              style={{ maxWidth: 760 }}
+            >
+              <input
+                className="form-control recipe-input"
+                placeholder="Enter recipe name..."
+                value={recipeName}
+                onChange={(e) => setRecipeName(e.target.value)}
+                style={{ maxWidth: 420 }}
+              />
+              <button type="submit" className="btn btn-primary px-4">
+                Add
+              </button>
+            </form>
 
-      {items.length === 0 ? (
-        <p>No items yet...</p>
-      ) : (
-        <>
-          <button onClick={clearAll} style={clearBtnStyle}>Clear All</button>
-
-          <div style={{ marginTop: "20px" }}>
-            {items.map((item) => (
-              <div key={item.id} style={cardStyle}>
-                <h3>{item.title}</h3>
-                <p><strong>Category:</strong> {item.category}</p>
-                <p>{item.desc}</p>
-
-                <button onClick={() => deleteItem(item.id)} style={deleteBtnStyle}>
-                  Delete
+            {/* Clear All button */}
+            {recipes.length > 0 && (
+              <div className="mb-3">
+                <button onClick={clearAll} className="btn btn-danger">
+                  Clear All
                 </button>
               </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+            )}
+
+            {/* Recipe cards list */}
+            <div className="row">
+              {recipes.length === 0 ? (
+                <div className="col-12 text-muted">No recipes yet — add one to get started.</div>
+              ) : (
+                recipes.map((item) => (
+                  <ItemCard
+                    key={item.id}
+                    item={item}
+                    toggleLike={toggleLike}
+                    deleteRecipe={deleteRecipe}
+                  />
+                ))
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      <Footer />
+    </>
   );
 }
-
-// ---------- Styles ----------
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  margin: "8px 0",
-  borderRadius: "8px",
-  border: "1px solid #888",
-};
-
-const btnStyle = {
-  padding: "10px 20px",
-  background: "#007bff",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-  marginTop: "10px",
-};
-
-const clearBtnStyle = {
-  padding: "10px 15px",
-  background: "darkred",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-};
-
-const cardStyle = {
-  background: "#f5f5f5",
-  padding: "20px",
-  marginBottom: "15px",
-  borderRadius: "12px",
-  boxShadow: "0px 3px 8px rgba(0,0,0,0.1)",
-};
-
-const deleteBtnStyle = {
-  padding: "8px 12px",
-  background: "red",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-};
 
 export default App;

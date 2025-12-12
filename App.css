@@ -1,121 +1,26 @@
-/* Page Background */
-.app {
-  padding: 40px;
-  background: linear-gradient(to bottom right, #f8f9fa, #e4f2ff);
-  min-height: 100vh;
-  transition: 0.3s ease-in-out;
+body {
+  background-color: #eef2f5;
 }
 
-/* Dark Mode */
-.app.dark {
-  background: #1f1f1f;
-  color: white;
+.pageContainer {
+  min-height: 70vh;
 }
 
-/* Title */
-.title {
-  text-align: center;
-  font-size: 32px;
-  margin-bottom: 30px;
-  font-weight: bold;
+.recipe-input {
+  max-width: 350px;
 }
 
-/* Main Card */
-.card {
-  background: white;
-  padding: 25px;
-  width: 420px;
-  margin: auto;
-  border-radius: 18px;
-  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+.custom-card {
+  width: 100%;
+  max-width: 300px;
   transition: 0.3s;
 }
 
-.app.dark .card {
-  background: #2d2d2d;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+.custom-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.2);
 }
 
-/* Buttons */
-.btn {
-  display: block;
-  width: 100%;
-  padding: 12px 0;
-  margin: 10px 0;
-  border: none;
-  font-size: 17px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-  color: white;
-}
-
-/* Like Button */
-.like {
-  background: #ff6584;
-}
-
-.like.active {
-  background: #ff2e63;
-}
-
-/* Done Button */
-.done {
-  background: #4caf50;
-}
-
-.done.active {
-  background: #2e7d32;
-}
-
-/* Info Button */
-.info {
-  background: #007bff;
-}
-
-/* Theme Button */
-.theme {
-  background: #7952b3;
-}
-
-/* Show/Hide Details */
-.details {
-  background: #f8f8f8;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 10px;
-  transition: 0.2s;
-}
-
-.app.dark .details {
-  background: #3a3a3a;
-}
-
-/* Quantity Section */
-.qty-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px 0;
-}
-
-.qty-btn {
-  width: 40px;
-  height: 40px;
-  font-size: 22px;
-  border: none;
-  background: #ff9800;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.qty-btn:disabled {
-  background: #d4d4d4;
-}
-
-.qty-number {
-  margin: 0 20px;
-  font-size: 24px;
-  font-weight: bold;
+h2 {
+  color: #333;
 }
