@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer className="text-center bg-dark text-light py-3 mt-5">
-      © 2025 Recipe Finder | All rights reserved
+    <footer className="bg-dark text-white text-center py-3 mt-auto">
+      © 2025 Recipe Finder
     </footer>
   );
 }

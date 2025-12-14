@@ -1,12 +1,20 @@
-function Navbar({ setPage }) {
+function Navbar({ setActivePage }) {
   return (
-    <nav className="navbar navbar-dark bg-dark px-4 py-3">
-      <h3 className="navbar-brand fw-bold">Recipe Finder</h3>
-
-      <div className="d-flex gap-3">
-        <button className="btn btn-light" onClick={() => setPage("home")}>Home</button>
-        <button className="btn btn-light" onClick={() => setPage("about")}>About</button>
-        <button className="btn btn-light" onClick={() => setPage("project")}>Project</button>
+    <nav className="navbar navbar-dark bg-dark px-3">
+      <span className="navbar-brand">Recipe Finder</span>
+      <div>
+        <button className="btn btn-light me-2" onClick={() => setActivePage("home")}>
+          Home
+        </button>
+        <button className="btn btn-light me-2" onClick={() => setActivePage("about")}>
+          About
+        </button>
+        <button className="btn btn-light me-2" onClick={() => setActivePage("project")}>
+          Project
+        </button>
+        <button className="btn btn-warning" onClick={() => setActivePage("product")}>
+          Product
+        </button>
       </div>
     </nav>
   );

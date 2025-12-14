@@ -1,26 +1,30 @@
-function ItemCard({ item, toggleLike, deleteRecipe }) {
+import { useState } from "react";
+
+function ItemCard({ recipe, deleteRecipe }) {
+  const [liked, setLiked] = useState(false);
+
   return (
-    <div className="col-md-4 mb-3 d-flex justify-content-center">
-      <div className="card shadow-lg p-3 rounded custom-card">
+    <div className="col-md-4 mb-4">
+      <div className="card h-100 shadow">
+        <img src={recipe.img} className="card-img-top" height="200" />
+        <div className="card-body">
+          <h5>{recipe.name}</h5>
+          <p>{recipe.desc}</p>
 
-        <h5 className="text-center fw-semibold">{item.title}</h5>
-
-        <div className="d-flex justify-content-between mt-3">
           <button
-            className={`btn ${item.liked ? "btn-success" : "btn-outline-success"}`}
-            onClick={() => toggleLike(item.id)}
+            className="btn btn-outline-primary"
+            onClick={() => setLiked(!liked)}
           >
-            {item.liked ? "Liked ❤️" : "Like 🤍"}
+            {liked ? "❤️ Liked" : "🤍 Like"}
           </button>
 
           <button
-            className="btn btn-outline-danger"
-            onClick={() => deleteRecipe(item.id)}
+            className="btn btn-outline-danger ms-2"
+            onClick={() => deleteRecipe(recipe.id)}
           >
             Delete
           </button>
         </div>
-
       </div>
     </div>
   );
