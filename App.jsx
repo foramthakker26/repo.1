@@ -1,41 +1,63 @@
-import { useEffect, useState } from "react";
-import "./App.css";
+import { useState } from "react";
 
 function App() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/message")
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-      })
-      .catch(() => {
-        setError("Failed to fetch data");
-      });
-  }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:5000/add-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setMessage("✅ User added successfully!");
+      setName("");
+      setEmail("");
+    }
+  };
 
   return (
-    <div className="container">
-      <h1>Frontend Backend Integration</h1>
+    <div style={{ padding: "40px", fontFamily: "Arial" }}>
+      <h2>Day 2: Frontend & Backend Integration</h2>
 
-      {error && <p className="error">{error}</p>}
-
-      {data ? (
-        <div className="card">
-          <p><strong>Message:</strong> {data.message}</p>
-
-          <h3>Users:</h3>
-          <ul>
-            {data.users.map((user, index) => (
-              <li key={index}>{user}</li>
-            ))}
-          </ul>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            placeholder="Enter name"
+            value={name}
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
-      ) : (
-        <p>Loading data from backend...</p>
-      )}
+
+        <br />
+
+        <div>
+          <input
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <br />
+
+        <button type="submit">Submit</button>
+      </form>
+
+      {message && <p>{message}</p>}
     </div>
   );
 }
