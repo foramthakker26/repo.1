@@ -2,30 +2,40 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const PORT = 5000;
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Test GET route
-app.get("/", (req, res) => {
-  res.send("Backend is running");
+// Sample data
+let users = [
+  { id: 1, name: "John" },
+  { id: 2, name: "Alice" }
+];
+
+// GET API – Fetch data
+app.get("/users", (req, res) => {
+  res.json(users);
 });
 
-// POST route (Day 2 requirement)
+// POST API – Add new data
 app.post("/add-user", (req, res) => {
-  const { name, email } = req.body;
+  const { name } = req.body;
 
-  console.log("POST request received:", req.body);
+  if (!name || name.trim() === "") {
+    return res.status(400).json({ message: "Name is required" });
+  }
 
-  res.status(200).json({
-    success: true,
+  const newUser = {
+    id: users.length + 1,
+    name
+  };
+
+  users.push(newUser);
+  res.status(201).json({
     message: "User added successfully",
-    data: { name, email },
+    user: newUser
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(5000, () => {
+  console.log("Backend running on http://localhost:5000");
 });
