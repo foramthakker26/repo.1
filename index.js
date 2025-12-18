@@ -5,37 +5,41 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Sample data
+// Dummy data (users)
 let users = [
-  { id: 1, name: "John" },
-  { id: 2, name: "Alice" }
+  { id: 1, name: "Rahul" },
+  { id: 2, name: "Anita" },
+  { id: 3, name: "virat" },
+  { id: 4, name: "prachi" }
 ];
 
-// GET API – Fetch data
+// GET users
 app.get("/users", (req, res) => {
   res.json(users);
 });
 
-// POST API – Add new data
-app.post("/add-user", (req, res) => {
+// PUT - Update user
+app.put("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id);
   const { name } = req.body;
 
-  if (!name || name.trim() === "") {
-    return res.status(400).json({ message: "Name is required" });
+  const user = users.find((u) => u.id === id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
   }
 
-  const newUser = {
-    id: users.length + 1,
-    name
-  };
+  user.name = name;
+  res.json({ message: "User updated successfully", user });
+});
 
-  users.push(newUser);
-  res.status(201).json({
-    message: "User added successfully",
-    user: newUser
-  });
+// DELETE - Delete user
+app.delete("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  users = users.filter((u) => u.id !== id);
+
+  res.json({ message: "User deleted successfully" });
 });
 
 app.listen(5000, () => {
-  console.log("Backend running on http://localhost:5000");
+  console.log("Server running on http://localhost:5000");
 });
